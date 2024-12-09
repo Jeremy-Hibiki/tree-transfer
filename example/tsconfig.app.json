@@ -8,6 +8,9 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "paths": {
+      "@jeremy-hibiki/*": ["../tree-transfer/src/*"]
+    },
     "allowImportingTsExtensions": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,

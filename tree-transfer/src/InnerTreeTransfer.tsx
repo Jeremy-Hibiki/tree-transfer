@@ -35,10 +35,10 @@ type HandleCheckboxSelectedCb = (args: {
 }) => void;
 
 export type TreeTransferProps = {
-  dataSource: TTDN[];
+  dataSource?: TTDN[];
   targetKeys?: string[];
-  defaultExpandAll: boolean;
-  treeHeight: number;
+  defaultExpandAll?: boolean;
+  treeHeight?: number;
   onChange?: (data: TTDN[]) => void;
 } & Omit<TransferProps, 'onChange'> &
   TreeProps;
@@ -49,7 +49,7 @@ const DEFAULT_TARGET_KEYS: string[] = [];
 const TreeTransfer = ({
   dataSource = DEFAULT_DATA_SOURCE,
   targetKeys: targetKeysProp = DEFAULT_TARGET_KEYS,
-  defaultExpandAll,
+  defaultExpandAll = true,
   treeHeight,
   onChange,
   ...restProps
@@ -104,7 +104,7 @@ const TreeTransfer = ({
       title,
       disabled: children
         ? checkedKeys.some((checkedKey) => checkedKey.split('-')[0] === key)
-        : checkedKeys.includes(String(key)),
+        : checkedKeys.includes(key),
       children: generateTreeMarkDisabled(children, checkedKeys),
     }));
   };
@@ -116,9 +116,9 @@ const TreeTransfer = ({
       node: { key, children },
     } = info;
 
-    if ((children?.length ?? 0) > 0) {
+    if (children && children.length > 0) {
       // 勾选的是父节点
-      const keys = children!.map((child) => child.key);
+      const keys = children.map((child) => child.key);
       onItemSelectAll([...keys, key], checked);
     } else {
       if (!checked) {
