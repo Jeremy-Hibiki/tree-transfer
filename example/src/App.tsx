@@ -98,6 +98,12 @@ function App() {
           dataSource={dataSourceJson}
           rootClassName="h-full w-70%"
           targetKeys={targetKeysJson}
+          treeProps={{
+            titleRender: (node: TreeTransferDataNode) => {
+              return <div>{node.isLeaf ? node.title : `${node.title} (${node.children?.length ?? 0})`}</div>;
+            },
+          }}
+          defaultExpandAll
           onChange={(data) => {
             setTransferred(JSON.stringify(data, null, 2));
           }}

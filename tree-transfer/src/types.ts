@@ -24,7 +24,8 @@ export type TreeTransferProps = {
   treeHeight?: number;
   keySeparator?: string;
   onChange?: (data: TreeTransferDataNode[]) => void;
-} & Omit<TransferProps, 'onChange'> &
-  TreeProps;
+
+  treeProps?: TreeProps<TreeTransferDataNode>;
+} & Omit<TransferProps, 'onChange'>;
 
 export const DEFAULT_KEY_SEPARATOR = '###';

@@ -29,6 +29,7 @@ const TreeTransfer = ({
   treeHeight,
   keySeparator = DEFAULT_KEY_SEPARATOR,
   onChange,
+  treeProps,
   ...restProps
 }: TreeTransferProps) => {
   const [transferDataSource, setTransferDataSource] = useState<TTDN[]>([]);
@@ -329,6 +330,7 @@ const TreeTransfer = ({
           const checkedKeys = [...selectedKeys, ...targetKeys];
           return (
             <Tree
+              {...treeProps}
               checkedKeys={checkedKeys}
               defaultExpandAll={defaultExpandAll}
               fieldNames={fieldNames}
@@ -352,6 +354,7 @@ const TreeTransfer = ({
         if (direction === 'right') {
           return (
             <Tree
+              {...treeProps}
               checkedKeys={[...selectedKeys]}
               defaultExpandAll={defaultExpandAll}
               fieldNames={fieldNames}
