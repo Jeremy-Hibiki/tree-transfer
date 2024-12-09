@@ -89,7 +89,13 @@ const TreeTransfer = ({
     });
   };
 
-  const dealCheckboxSelected: HandleCheckboxSelectedCb = ({ info, checkedKeys, onItemSelect, onItemSelectAll }) => {
+  const dealCheckboxSelected: HandleCheckboxSelectedCb = ({
+    info,
+    checkedKeys,
+    direction,
+    onItemSelect,
+    onItemSelectAll,
+  }) => {
     const {
       checked,
       halfCheckedKeys = [],
@@ -98,8 +104,17 @@ const TreeTransfer = ({
 
     if (children && children.length > 0) {
       // 勾选的是父节点
-      const keys = children.map((child) => child.key);
-      onItemSelectAll([...keys, key], checked);
+      const keys = children
+        .map((child) => child.key)
+        .filter((key) => {
+          const isTarget = targetKeys.includes(key);
+          return direction === 'left' ? !isTarget : isTarget;
+        });
+      if (direction === 'left') {
+        onItemSelectAll([...keys, key], checked);
+      } else {
+        onItemSelectAll(keys, checked);
+      }
     } else {
       if (!checked) {
         const parentKey = halfCheckedKeys[0] ?? key.split(keySeparator, 2)[0];
@@ -152,8 +167,8 @@ const TreeTransfer = ({
           // 左侧数据处理
           let selectedParentKey = ''; //选定的父项id
           let selectedObj = {} as TTDN; //选定对象
-          if (data?.children?.length ?? 0) {
-            data.children?.forEach((child) => {
+          if (data?.children && data.children.length > 0) {
+            data.children.forEach((child) => {
               if (key === child.key) {
                 selectedParentKey = data.key;
                 selectedObj = child;
@@ -326,6 +341,7 @@ const TreeTransfer = ({
                 dealCheckboxSelected({
                   info,
                   checkedKeys: checkedKeys as string[],
+                  direction,
                   onItemSelect,
                   onItemSelectAll,
                 });
@@ -349,6 +365,7 @@ const TreeTransfer = ({
                 dealCheckboxSelected({
                   info,
                   checkedKeys: checkedKeys as string[],
+                  direction,
                   onItemSelect,
                   onItemSelectAll,
                 });

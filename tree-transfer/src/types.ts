@@ -12,6 +12,7 @@ export type CheckInfo = Parameters<Required<TreeProps<TreeTransferDataNode>>['on
 export type HandleCheckboxSelectedCb = (args: {
   info: CheckInfo;
   checkedKeys: string[];
+  direction: 'left' | 'right';
   onItemSelect: (key: string, checked: boolean) => void;
   onItemSelectAll: (keys: string[], checked: boolean) => void;
 }) => void;
