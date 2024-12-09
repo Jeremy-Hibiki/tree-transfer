@@ -1,6 +1,8 @@
 /* eslint-disable ts/no-unsafe-return */
 /* eslint-disable ts/no-unsafe-assignment */
-import TreeTransfer from '@jeremy-hibiki/tree-transfer';
+import type { TreeTransferDataNode } from '@jeremy-hibiki/tree-transfer';
+
+import TreeTransfer, { DEFAULT_KEY_SEPARATOR } from '@jeremy-hibiki/tree-transfer';
 import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
@@ -10,26 +12,26 @@ import { useCallback, useMemo, useState } from 'react';
 import AceEditor from 'react-ace';
 import { ErrorBoundary } from 'react-error-boundary';
 
-const DEFAULT_DATA_SOURCE = [
+const DEFAULT_DATA_SOURCE_ORIG = [
   {
     title: 'CS 大类',
     key: 'cs',
     children: [
       {
         title: 'CS',
-        key: 'cs-cs',
+        key: 'cs',
       },
       {
         title: 'CS Computer Vision',
-        key: 'cs-cs.CV',
+        key: 'cs.CV',
       },
       {
         title: 'CS Artificial Intelligence',
-        key: 'cs-cs.AI',
+        key: 'cs.AI',
       },
       {
         title: 'CS Information Theory',
-        key: 'cs-cs.IT',
+        key: 'cs.IT',
       },
     ],
   },
@@ -39,15 +41,28 @@ const DEFAULT_DATA_SOURCE = [
     children: [
       {
         title: 'MATH Algebraic Topology',
-        key: 'math-math.AT',
+        key: 'math.AT',
       },
       {
         title: 'MATH Algebraic Geometry',
-        key: 'math-math.AG',
+        key: 'math.AG',
       },
     ],
   },
-];
+] as TreeTransferDataNode[];
+
+const DEFAULT_DATA_SOURCE = DEFAULT_DATA_SOURCE_ORIG.map((item) => {
+  if (!item.children || item.children.length === 0) return item;
+  const parentKey = item.key;
+  const children = item.children.map((child) => ({
+    ...child,
+    key: `${parentKey}${DEFAULT_KEY_SEPARATOR}${child.key}`,
+  }));
+  return {
+    ...item,
+    children,
+  };
+});
 
 const DEFAULT_DATA_SOURCE_JSON = JSON.stringify(DEFAULT_DATA_SOURCE, null, 2);
 

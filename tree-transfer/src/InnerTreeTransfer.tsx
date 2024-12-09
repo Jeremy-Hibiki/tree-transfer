@@ -3,11 +3,13 @@
  * @see https://codesandbox.io/p/sandbox/shu-chuan-suo-kuang-sou-suo-23xpvr
  */
 
-import type { TreeDataNode as OrigTreeDataNode, TransferProps, TreeProps } from 'antd';
-
 import { Transfer, Tree } from 'antd';
 import { difference } from 'lodash-es';
 import { useEffect, useState } from 'react';
+
+import type { HandleCheckboxSelectedCb, SelectAllLabelCb, TreeTransferDataNode, TreeTransferProps } from './types';
+
+import { DEFAULT_KEY_SEPARATOR } from './types';
 
 const fieldNames = {
   title: 'title',
@@ -15,34 +17,8 @@ const fieldNames = {
   children: 'children',
 };
 
-export type TreeTransferDataNode = Omit<OrigTreeDataNode, 'key' | 'title' | 'children'> & {
-  key: string;
-  title: string;
-  children?: TreeTransferDataNode[];
-};
-
 // Alias for convenience
 type TTDN = TreeTransferDataNode;
-
-type ExtractFunction<T> = T extends (...args: any[]) => any ? T : never;
-type SelectAllLabelCb = ExtractFunction<Required<TransferProps>['selectAllLabels'][number]>;
-type CheckInfo = Parameters<Required<TreeProps<TTDN>>['onCheck']>[1];
-type HandleCheckboxSelectedCb = (args: {
-  info: CheckInfo;
-  checkedKeys: string[];
-  onItemSelect: (key: string, checked: boolean) => void;
-  onItemSelectAll: (keys: string[], checked: boolean) => void;
-}) => void;
-
-export type TreeTransferProps = {
-  dataSource?: TTDN[];
-  targetKeys?: string[];
-  defaultExpandAll?: boolean;
-  treeHeight?: number;
-  onChange?: (data: TTDN[]) => void;
-} & Omit<TransferProps, 'onChange'> &
-  TreeProps;
-
 const DEFAULT_DATA_SOURCE: TTDN[] = [];
 const DEFAULT_TARGET_KEYS: string[] = [];
 
@@ -51,6 +27,7 @@ const TreeTransfer = ({
   targetKeys: targetKeysProp = DEFAULT_TARGET_KEYS,
   defaultExpandAll = true,
   treeHeight,
+  keySeparator = DEFAULT_KEY_SEPARATOR,
   onChange,
   ...restProps
 }: TreeTransferProps) => {
@@ -78,7 +55,7 @@ const TreeTransfer = ({
     };
 
     const handleInitialRightTreeData = () => {
-      const regionIds = Array.from(new Set(targetKeysProp.map((unionKey) => unionKey.split('-')[0])));
+      const regionIds = Array.from(new Set(targetKeysProp.map((unionKey) => unionKey.split(keySeparator, 2)[0])));
       const remainRegions = dataSource.filter((item) => regionIds.includes(item.key));
       const rightTree = remainRegions.map((item) => {
         const { children, ...rest } = item;
@@ -96,14 +73,14 @@ const TreeTransfer = ({
     setLeftTreeFiltered([...dataSource]);
     handleTransferDataSource();
     handleInitialRightTreeData();
-  }, [dataSource, targetKeysProp]);
+  }, [dataSource, keySeparator, targetKeysProp]);
 
   const generateTreeMarkDisabled = (treeNodes: TTDN[] = [], checkedKeys: string[] = []): TTDN[] => {
     return treeNodes.map(({ children, key, title }) => ({
       key,
       title,
       disabled: children
-        ? checkedKeys.some((checkedKey) => checkedKey.split('-')[0] === key)
+        ? checkedKeys.some((checkedKey) => checkedKey.split(keySeparator, 2)[0] === key)
         : checkedKeys.includes(key),
       children: generateTreeMarkDisabled(children, checkedKeys),
     }));
@@ -122,12 +99,14 @@ const TreeTransfer = ({
       onItemSelectAll([...keys, key], checked);
     } else {
       if (!checked) {
-        const parentKey = halfCheckedKeys[0] ?? key.split('-')[0];
+        const parentKey = halfCheckedKeys[0] ?? key.split(keySeparator, 2)[0];
         onItemSelectAll([parentKey as string, key], checked);
       } else {
-        const currentItemTree = leftTreeFiltered.filter((item) => item.key === key.split('-')[0])[0];
-        const parentKey = key.split('-')[0];
-        const currentItemTreeSelectedKeys = checkedKeys.filter((key) => key.split('-')[0].includes(parentKey));
+        const currentItemTree = leftTreeFiltered.filter((item) => item.key === key.split(keySeparator, 2)[0])[0];
+        const parentKey = key.split(keySeparator, 2)[0];
+        const currentItemTreeSelectedKeys = checkedKeys.filter((key) =>
+          key.split(keySeparator, 2)[0].includes(parentKey)
+        );
 
         if (
           !halfCheckedKeys?.includes(parentKey) &&
@@ -219,9 +198,11 @@ const TreeTransfer = ({
   };
 
   const getValidTargetKeysWhenReduceSearch = (filteredTree: TTDN[]) => {
-    const parentKeys = targetKeys.filter((key) => !key.split('-')[1]);
+    const parentKeys = targetKeys.filter((key) => !key.split(keySeparator, 2)[1]);
     const validParentKeys = parentKeys.filter((parentKey) => {
-      const targetItemChildKeys = targetKeys.filter((key) => key.split('-')[1] && key.split('-')[0] === parentKey);
+      const targetItemChildKeys = targetKeys.filter(
+        (key) => key.split(keySeparator, 2)[1] && key.split(keySeparator, 2)[0] === parentKey
+      );
       const itemLeftTree = filteredTree.find((item) => item.key === parentKey);
       return itemLeftTree?.children?.length === targetItemChildKeys.length;
     });
@@ -275,7 +256,7 @@ const TreeTransfer = ({
       rightData = toGetRightTreeData(keys, moveTo);
     } else {
       setRightCheckedKeys([]);
-      const invalidParentKeys = Array.from(new Set(moveKeys.map((key) => key.split('-')[0])));
+      const invalidParentKeys = Array.from(new Set(moveKeys.map((key) => key.split(keySeparator, 2)[0])));
       setTargetKeys(difference(keys, invalidParentKeys));
       rightData = toGetRightTreeData(moveKeys, moveTo);
     }
