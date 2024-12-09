@@ -3,7 +3,8 @@
 import type { TreeTransferDataNode } from '@jeremy-hibiki/tree-transfer';
 
 import TreeTransfer, { DEFAULT_KEY_SEPARATOR } from '@jeremy-hibiki/tree-transfer';
-import 'ace-builds/src-noconflict/ace';
+import ace from 'ace-builds/src-noconflict/ace';
+import jsonWorkerUrl from 'ace-builds/src-noconflict/worker-json?url';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/ext-language_tools';
@@ -11,6 +12,9 @@ import { Button, Splitter } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
 import AceEditor from 'react-ace';
 import { ErrorBoundary } from 'react-error-boundary';
+
+// eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-member-access
+ace.config.setModuleUrl('ace/mode/json_worker', jsonWorkerUrl);
 
 const DEFAULT_DATA_SOURCE_ORIG = [
   {
@@ -124,9 +128,11 @@ function App() {
               name="dataSource"
               height="100%"
               mode="json"
+              tabSize={2}
               theme="github"
               value={dataSource}
-              onBlur={(e, editor) => {
+              enableBasicAutocompletion
+              onBlur={(_, editor) => {
                 setDataSource(editor!.getValue());
               }}
             />
@@ -138,9 +144,11 @@ function App() {
               name="targetKeys"
               height="100%"
               mode="json"
+              tabSize={2}
               theme="github"
               value={targetKeys}
-              onBlur={(e, editor) => {
+              enableBasicAutocompletion
+              onBlur={(_, editor) => {
                 setTargetKeys(editor?.getValue() ?? '');
               }}
             />
@@ -152,6 +160,7 @@ function App() {
               name="transferredData"
               height="100%"
               mode="json"
+              tabSize={2}
               theme="github"
               value={transferred ?? '[]'}
               readOnly
