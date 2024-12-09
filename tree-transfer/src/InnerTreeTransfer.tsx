@@ -43,9 +43,12 @@ export type TreeTransferProps = {
 } & Omit<TransferProps, 'onChange'> &
   TreeProps;
 
+const DEFAULT_DATA_SOURCE: TTDN[] = [];
+const DEFAULT_TARGET_KEYS: string[] = [];
+
 const TreeTransfer = ({
-  dataSource = [],
-  targetKeys: targetKeysProp = [],
+  dataSource = DEFAULT_DATA_SOURCE,
+  targetKeys: targetKeysProp = DEFAULT_TARGET_KEYS,
   defaultExpandAll,
   treeHeight,
   onChange,
