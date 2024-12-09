@@ -6,9 +6,9 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "pnpm -r --parallel dev",
-    "dev:example": "pnpm --filter example dev",
-    "dev:component": "pnpm --filter tree-transfer dev",
-    "build": "pnpm --filter tree-transfer build",
+    "dev:example": "pnpm --filter ./example dev",
+    "dev:component": "pnpm --filter ./tree-transfer dev",
+    "build": "pnpm --filter ./tree-transfer build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
