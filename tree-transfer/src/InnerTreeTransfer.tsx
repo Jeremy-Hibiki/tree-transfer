@@ -5,7 +5,7 @@
 
 import { Transfer, Tree } from 'antd';
 import { difference } from 'lodash-es';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { HandleCheckboxSelectedCb, SelectAllLabelCb, TreeTransferDataNode, TreeTransferProps } from './types';
 
@@ -30,6 +30,7 @@ const TreeTransfer = ({
   keySeparator = DEFAULT_KEY_SEPARATOR,
   onChange,
   treeProps,
+  filterOption: filterOptionProp,
   ...restProps
 }: TreeTransferProps) => {
   const [transferDataSource, setTransferDataSource] = useState<TTDN[]>([]);
@@ -231,21 +232,28 @@ const TreeTransfer = ({
     return validTargetKeys;
   };
 
-  const getFilteredTree = (data: TTDN[], searchValIgnoreCase: string) => {
+  const filterOption = useMemo<Required<TreeTransferProps>['filterOption']>(() => {
+    if (typeof filterOptionProp === 'function') {
+      return filterOptionProp;
+    }
+    return (input, item, _direction) => item.title.toLowerCase().includes(input.trim().toLowerCase());
+  }, [filterOptionProp]);
+
+  const getFilteredTree = (data: TTDN[], searchValIgnoreCase: string, direction: 'left' | 'right') => {
     return data
       .map((item) => {
-        if (item.title.toLowerCase().includes(searchValIgnoreCase)) {
+        if (filterOption(searchValIgnoreCase, item, direction)) {
           return item;
         }
         item = { ...item };
         if (item.children) {
-          item.children = item.children?.filter((res) => res.title.toLowerCase().includes(searchValIgnoreCase));
+          item.children = item.children?.filter((res) => filterOption(searchValIgnoreCase, res, direction));
         }
         return item;
       })
       .filter((item) => {
         if ((item.children?.length ?? 0) || !searchValIgnoreCase) return true;
-        return item.title.toLowerCase().includes(searchValIgnoreCase);
+        return filterOption(searchValIgnoreCase, item, direction);
       });
   };
 
@@ -257,7 +265,7 @@ const TreeTransfer = ({
       setRightSearchVal(valIgnoreCase);
     }
     const data = dir === 'left' ? dataSource : rightTreeData;
-    const filteredTree = getFilteredTree(data, valIgnoreCase);
+    const filteredTree = getFilteredTree(data, valIgnoreCase, dir);
     if (dir === 'left') {
       setLeftTreeFiltered(filteredTree);
       // TODO: 增加搜索条件的时候， 处理realTargetKeys
@@ -281,7 +289,7 @@ const TreeTransfer = ({
       setTargetKeys(difference(keys, invalidParentKeys));
       rightData = toGetRightTreeData(moveKeys, moveTo);
     }
-    setRightTreeFiltered(getFilteredTree(rightData, rightSearchVal));
+    setRightTreeFiltered(getFilteredTree(rightData, rightSearchVal, 'right'));
     setRightTreeData(rightData);
     onChange?.(rightData);
   };
