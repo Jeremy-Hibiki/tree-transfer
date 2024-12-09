@@ -2,24 +2,29 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
+const ReactCompilerConfig = {
+  target: '18',
+};
+
 export default defineConfig({
-  plugins: [react(), dts({ include: ['src'] })],
+  plugins: [
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
+      },
+    }),
+    dts({ include: ['src'] }),
+  ],
   build: {
-    sourcemap: true,
     lib: {
       entry: './src/index.ts',
       name: 'TreeTransfer',
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'antd'],
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          antd: 'antd',
-        },
-      },
+      external: ['react', 'react-dom', 'react/jsx-runtime', 'react-compiler-runtime', 'antd', 'lodash-es'],
     },
+    sourcemap: true,
+    minify: false,
   },
 });

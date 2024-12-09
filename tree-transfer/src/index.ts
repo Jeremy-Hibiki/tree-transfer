@@ -1,3 +1,6 @@
-import { Transfer, Tree } from 'antd';
+import type { TreeTransferDataNode, TreeTransferProps } from './InnerTreeTransfer';
 
-export { Transfer, Tree };
+import InnerTreeTransfer from './InnerTreeTransfer';
+
+export type { TreeTransferDataNode, TreeTransferProps };
+export default InnerTreeTransfer;
