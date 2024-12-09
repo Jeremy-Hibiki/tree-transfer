@@ -9,7 +9,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@jeremy-hibiki/*": ["../tree-transfer/src/*"]
+      "@jeremy-hibiki/tree-transfer": ["../tree-transfer/src"],
+      "@jeremy-hibiki/tree-transfer/*": ["../tree-transfer/src/*"]
     },
     "allowImportingTsExtensions": true,
     "strict": true,
