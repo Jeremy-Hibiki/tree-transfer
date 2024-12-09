@@ -121,7 +121,9 @@ const TreeTransfer = ({
         const parentKey = halfCheckedKeys[0] ?? key.split(keySeparator, 2)[0];
         onItemSelectAll([parentKey as string, key], checked);
       } else {
-        const currentItemTree = leftTreeFiltered.filter((item) => item.key === key.split(keySeparator, 2)[0])[0];
+        const currentItemTree = (direction === 'left' ? leftTreeFiltered : rightTreeFiltered).filter(
+          (item) => item.key === key.split(keySeparator, 2)[0]
+        )[0];
         const parentKey = key.split(keySeparator, 2)[0];
         const currentItemTreeSelectedKeys = checkedKeys.filter((key) =>
           key.split(keySeparator, 2)[0].includes(parentKey)
