@@ -46,6 +46,7 @@ const TreeTransfer = ({
       function flatten(list: TTDN[] = []) {
         list.forEach((item) => {
           item.key = String(item.key);
+          item.isLeaf = Boolean(item.children === undefined || item.children.length === 0);
           transferData.push(item);
           flatten(item.children);
         });
@@ -76,14 +77,16 @@ const TreeTransfer = ({
   }, [dataSource, keySeparator, targetKeysProp]);
 
   const generateTreeMarkDisabled = (treeNodes: TTDN[] = [], checkedKeys: string[] = []): TTDN[] => {
-    return treeNodes.map(({ children, key, title }) => ({
-      key,
-      title,
-      disabled: children
-        ? checkedKeys.some((checkedKey) => checkedKey.split(keySeparator, 2)[0] === key)
-        : checkedKeys.includes(key),
-      children: generateTreeMarkDisabled(children, checkedKeys),
-    }));
+    return treeNodes.map(({ children, key, title, isLeaf }) => {
+      const checkedChild = children?.filter((child) => checkedKeys.includes(child.key));
+      return {
+        key,
+        title,
+        isLeaf,
+        disabled: children ? checkedChild!.length === children.length : checkedKeys.includes(key),
+        children: generateTreeMarkDisabled(children, checkedKeys),
+      } as TTDN;
+    });
   };
 
   const dealCheckboxSelected: HandleCheckboxSelectedCb = ({ info, checkedKeys, onItemSelect, onItemSelectAll }) => {
