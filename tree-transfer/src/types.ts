@@ -26,6 +26,6 @@ export type TreeTransferProps = {
   onChange?: (data: TreeTransferDataNode[]) => void;
 
   treeProps?: TreeProps<TreeTransferDataNode>;
-} & Omit<TransferProps, 'onChange'>;
+} & Omit<TransferProps<TreeTransferDataNode>, 'onChange'>;
 
 export const DEFAULT_KEY_SEPARATOR = '###';
