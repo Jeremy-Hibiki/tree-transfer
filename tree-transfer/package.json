@@ -2,6 +2,16 @@
   "name": "@jeremy-hibiki/tree-transfer",
   "type": "module",
   "version": "0.1.0",
+  "author": "Jeremy-Hibiki <JeremyJiang430@outlook.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/jeremy-hibiki/tree-transfer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeremy-hibiki/tree-transfer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jeremy-hibiki/tree-transfer/issues"
+  },
   "exports": {
     "types": "./dist/index.d.ts",
     "import": "./dist/index.js",
