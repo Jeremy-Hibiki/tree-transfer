@@ -88,7 +88,7 @@ importers:
   tree-transfer:
     dependencies:
       react-compiler-runtime:
-        specifier: 19.0.0-beta-df7b47d-20241124
+        specifier: ^19.0.0-beta-df7b47d-20241124
         version: 19.0.0-beta-df7b47d-20241124(react@18.3.1)
     devDependencies:
       '@types/lodash-es':
@@ -107,7 +107,7 @@ importers:
         specifier: ^5.22.3
         version: 5.22.3(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       babel-plugin-react-compiler:
-        specifier: 19.0.0-beta-df7b47d-20241124
+        specifier: ^19.0.0-beta-df7b47d-20241124
         version: 19.0.0-beta-df7b47d-20241124
       lodash-es:
         specifier: ^4.17.21
