@@ -8,7 +8,9 @@ on:
 jobs:
   publish:
     permissions:
-      contents: write
+      contents: read
+      id-token: write
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
