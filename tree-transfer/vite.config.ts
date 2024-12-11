@@ -27,7 +27,7 @@ export default defineConfig({
       output: {
         exports: 'named',
       },
-      external: ['react', 'react-dom', 'react/jsx-runtime', 'react-compiler-runtime', 'antd', 'lodash-es'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', 'react-compiler-runtime', 'antd', 'lodash.difference'],
     },
     sourcemap: true,
     minify: false,

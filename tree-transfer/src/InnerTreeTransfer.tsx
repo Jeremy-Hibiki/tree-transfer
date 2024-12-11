@@ -4,7 +4,7 @@
  */
 
 import { Transfer, Tree } from 'antd';
-import { difference } from 'lodash-es';
+import difference from 'lodash.difference';
 import { useEffect, useMemo, useState } from 'react';
 
 import type { HandleCheckboxSelectedCb, SelectAllLabelCb, TreeTransferDataNode, TreeTransferProps } from './types';
