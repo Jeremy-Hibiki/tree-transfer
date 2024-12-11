@@ -26,10 +26,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         exports: 'named',
+        generatedCode: 'es2015',
       },
       external: ['react', 'react-dom', 'react/jsx-runtime', 'react-compiler-runtime', 'antd', 'lodash.difference'],
     },
     sourcemap: true,
     minify: false,
+    target: 'es2015',
   },
 });
