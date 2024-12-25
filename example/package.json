@@ -9,22 +9,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.2",
     "@jeremy-hibiki/tree-transfer": "workspace:*",
-    "@unocss/reset": "^0.65.1",
-    "ace-builds": "^1.36.5",
-    "antd": "^5.22.4",
-    "react": "^18.3.1",
+    "@unocss/reset": "^0.65.3",
+    "ace-builds": "^1.37.1",
+    "antd": "^5.22.6",
+    "react": "^19",
     "react-ace": "^13.0.0",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19",
     "react-error-boundary": "^4.1.2"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "@types/react": "^18.3.16",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "babel-plugin-react-compiler": "beta",
     "typescript": "^5.7.2",
-    "unocss": "^0.65.1",
-    "vite": "^6.0.3"
+    "unocss": "^0.65.3",
+    "vite": "^6.0.5"
   }
 }

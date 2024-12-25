@@ -1,7 +1,7 @@
 {
   "name": "@jeremy-hibiki/tree-transfer",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Jeremy-Hibiki <JeremyJiang430@outlook.com>",
   "license": "MIT",
   "homepage": "https://github.com/Jeremy-Hibiki/tree-transfer",
@@ -13,9 +13,16 @@
     "url": "https://github.com/Jeremy-Hibiki/tree-transfer/issues"
   },
   "exports": {
-    "types": "./dist/index.d.ts",
-    "import": "./dist/index.js",
-    "require": "./dist/index.cjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./compat": {
+      "types": "./dist/compat/types/index.d.ts",
+      "import": "./dist/compat/index.js",
+      "require": "./dist/compat/index.cjs"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,27 +32,34 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc && vite build"
+    "build": "rm -r dist && pnpm run build:19 && pnpm run build:18",
+    "build:19": "tsc && vite build --config vite.config.ts",
+    "build:18": "tsc && vite build --config vite.config.react18.ts"
   },
   "peerDependencies": {
     "antd": "^5",
-    "react": "^18",
+    "react": "^18 || ^19",
     "react-compiler-runtime": "^19",
-    "react-dom": "^18"
+    "react-dom": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "react-compiler-runtime": {
+      "optional": true
+    }
   },
   "dependencies": {
     "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
     "@types/lodash.difference": "^4.5.9",
-    "@types/react": "^18.3.16",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.3.4",
     "antd": "^5.22.4",
     "babel-plugin-react-compiler": "beta",
-    "react": "^18.3.1",
+    "react": "^19",
     "react-compiler-runtime": "beta",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19",
     "tinyglobby": "^0.2.10",
     "typescript": "^5.7.2",
     "vite": "^6.0.3",

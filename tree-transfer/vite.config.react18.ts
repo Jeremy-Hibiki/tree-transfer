@@ -9,23 +9,16 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [
-          [
-            'babel-plugin-react-compiler',
-            {
-              target: '19',
-            },
-          ],
-        ],
+        plugins: [['babel-plugin-react-compiler', { target: '18' }]],
       },
     }),
     dts({
       include: srcFiles,
-      outDir: 'dist/types',
+      outDir: 'dist/compat/types',
     }),
   ],
   build: {
-    outDir: 'dist',
+    outDir: 'dist/compat',
     lib: {
       entry: srcFiles,
       formats: ['es', 'cjs'],
