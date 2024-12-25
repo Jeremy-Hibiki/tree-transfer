@@ -1,7 +1,7 @@
 {
   "name": "@jeremy-hibiki/tree-transfer",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Jeremy-Hibiki <JeremyJiang430@outlook.com>",
   "license": "MIT",
   "homepage": "https://github.com/Jeremy-Hibiki/tree-transfer",
@@ -14,7 +14,7 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
@@ -26,7 +26,7 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
