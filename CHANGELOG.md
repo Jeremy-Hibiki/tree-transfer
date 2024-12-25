@@ -2,11 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2024-12-25
+
+### 🐛 Bug Fixes
+
+- Update types path in package.json to point to the correct directory
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version to 0.3.1
+
 ## [0.3.0] - 2024-12-25
 
 ### 🚀 Features
 
 - Build against both react 18 and 19
+
+### 🐛 Bug Fixes
+
+- Example deps
+- Improve build script to handle dist directory
 
 ### ⚙️ Miscellaneous Tasks
 
